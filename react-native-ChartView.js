@@ -1,92 +1,21 @@
-import React, { Component, PropTypes, } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-  WebView,
-  Image,
-  Dimensions
+    AppRegistry,
+    StyleSheet,
+    Text,
+    View,
+    WebView,
+    Image,
+    Dimensions,
 } from 'react-native';
 
 const win = Dimensions.get('window');
-const Highcharts='Highcharts';
-
 class ChartWeb extends Component {
+  constructor(props) {
+    super(props);
 
-    static defaultProps = {
-        config: {
-            chart: {
-                type: "spline",
-                animation: Highcharts.svg, // don"t animate in old IE
-                marginRight: 10,
-                events: {
-                    load: function () {
-
-                        // set up the updating of the chart each second
-                        var series = this.series[0];
-                        setInterval(function () {
-                            var x = (new Date()).getTime(), // current time
-                                y = Math.random();
-                            series.addPoint([x, y], true, true);
-                        }, 1000);
-                    }
-                }
-            },
-            title: {
-                text: "Live random data"
-            },
-            xAxis: {
-                type: "datetime",
-                tickPixelInterval: 150
-            },
-            yAxis: {
-                title: {
-                    text: "Value"
-                },
-                plotLines: [{
-                    value: 0,
-                    width: 1,
-                    color: "#808080"
-                }]
-            },
-            tooltip: {
-                formatter: function () {
-                    return "<b>" + this.series.name + "</b><br/>" +
-                        Highcharts.dateFormat("%Y-%m-%d %H:%M:%S", this.x) + "<br/>" +
-                        Highcharts.numberFormat(this.y, 2);
-                }
-            },
-            legend: {
-                enabled: false
-            },
-            exporting: {
-                enabled: false
-            },
-            series: [{
-                name: "Random data",
-                data: (function () {
-                    // generate an array of random data
-                    var data = [],
-                        time = (new Date()).getTime(),
-                        i;
-
-                    for (i = -19; i <= 0; i += 1) {
-                        data.push({
-                            x: time + i * 1000,
-                            y: Math.random()
-                        });
-                    }
-                    return data;
-                } ())
-            }]
-        }
-    };
-
-    constructor(props){
-        super(props);
-        this.state={
-            init:`<html>
+    this.state = {
+      init: `<html>
                     <style media="screen" type="text/css">
                     #container {
                         width:100%;
@@ -100,13 +29,14 @@ class ChartWeb extends Component {
                     </style>
                     <head>
                         <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-                        <script src="https://code.highcharts.com/highcharts.js"></script>
+                        ${this.props.stock ? '<script src="https://code.highcharts.com/stock/highstock.js"></script>'
+                                      : '<script src="https://code.highcharts.com/highcharts.js"></script>'}
                         <script src="https://code.highcharts.com/modules/heatmap.js"></script>
                         <script src="https://code.highcharts.com/modules/exporting.js"></script>
                         <script>
                         $(function () {
-                            Highcharts.chart('container', `,
-            end:`           );
+                            Highcharts.${this.props.stock ? 'stockChart' : 'chart'}('container', `,
+      end: `           );
                         });
                         </script>
                     </head>
@@ -115,51 +45,77 @@ class ChartWeb extends Component {
                         </div>
                     </body>
                 </html>`,
-            Wlayout:{
-                height:win.height,
-                width:win.width
-            }
-        }
-    }
-
-    re_renderWebView(e) {//re_render is used to resize on orientation of display
-        this.setState({
-            Wlayout: {
-                height: e.nativeEvent.layout.height,
-                width: e.nativeEvent.layout.width,
-            }
-        })
-    }
-
-    render() {
-        var config = JSON.stringify(this.props.config, function (key, value) {//create string of json but if it detects function it uses toString()
-            return (typeof value === 'function') ? value.toString() : value;
-        });
-
-        config = config.replace(/\\n/g, " ");//remove \n in string = ""
-        config = config.replace(/\"([^(\")"]+)\":/g, "$1: ");//remove {"chart":"chart"} = {chart:"chart"}
-        config = config.replace(/\"function/g, "function");//remove {chart:"function ...} = {chart:function ...}
-        config = config.replace(/}\"/g, "}");//remove {chart:function(){}"} = {chart:function(){}}
-        var concatHTML = this.state.init + config + this.state.end;
-        return (
-            <View style={this.props.style}>
-                <WebView
-                    onLayout={this.re_renderWebView}
-                    style={styles.full}
-                    source={{ html: concatHTML, baseUrl: 'web/' }}
-                    javaScriptEnabled={true}
-                    scrollEnabled={false}
-                    bounces={false}
-                />
-            </View>
-        );
+      Wlayout: {
+        height: win.height,
+        width: win.width,
+      },
     };
+  }
+
+    // used to resize on orientation of display
+  reRenderWebView(e) {
+    this.setState({
+      height: e.nativeEvent.layout.height,
+      width: e.nativeEvent.layout.width,
+    });
+  }
+
+  render() {
+    let config = JSON.stringify(this.props.config, (key, value) =>  // create string of json but if it detects function it uses toString()
+           (typeof value === 'function') ? value.toString() : value);
+
+
+    config = JSON.parse(config);
+    const concatHTML = `${this.state.init}${flattenObject(config)}${this.state.end}`;
+
+    return (
+      <View style={this.props.style}>
+        <WebView
+          onLayout={this.reRenderWebView}
+          style={styles.full}
+          source={{ html: concatHTML, baseUrl: 'web/' }}
+          javaScriptEnabled={true}
+          domStorageEnabled={true}
+          // scalesPageToFit={true}
+          scrollEnabled={false}
+          // automaticallyAdjustContentInsets={true}
+        />
+      </View>
+    );
+  }
+}
+
+let flattenObject = function (obj, str = '{') {
+  Object.keys(obj).forEach((key) => {
+    str += `${key}: ${flattenText(obj[key])}, `;
+  });
+  return `${str.slice(0, str.length - 2)}}`;
 };
 
-var styles = StyleSheet.create({
-    full: {
-        flex: 1,
-    }
-});
+let flattenText = function (item) {
+  let str = '';
+  if (item && typeof item === 'object' && item.length == undefined) {
+    str += flattenObject(item);
+  } else if (item && typeof item === 'object' && item.length !== undefined) {
+    str += '[';
+    item.forEach((k2) => {
+      str += `${flattenText(k2)}, `;
+    });
+    str = str.slice(0, str.length - 2);
+    str += ']';
+  } else if (typeof item === 'string' && item.slice(0, 8) === 'function') {
+    str += `${item}`;
+  } else if (typeof item === 'string') {
+    str += `\"${item.replace(/"/g, '\\"')}\"`;
+  } else {
+    str += `${item}`;
+  }
+  return str;
+};
 
-module.exports = ChartWeb;
+let styles = StyleSheet.create({
+  full: {
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
+});
