@@ -1,0 +1,101 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/Vince/.nvm/versions/node/v5.6.0/bin/node',
+1 verbose cli   '/Users/Vince/.nvm/versions/node/v5.6.0/bin/npm',
+1 verbose cli   'publish' ]
+2 info using npm@3.6.0
+3 info using node@v5.6.0
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/Vince/Desktop/rn-highcharts',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/Vince/.npm/rn-highcharts/0.2.0/package.tgz not in flight; packing
+9 verbose correctMkdir /Users/Vince/.npm correctMkdir not in flight; initializing
+10 info lifecycle rn-highcharts@0.2.0~prepublish: rn-highcharts@0.2.0
+11 silly lifecycle rn-highcharts@0.2.0~prepublish: no script for prepublish, continuing
+12 verbose tar pack [ '/Users/Vince/.npm/rn-highcharts/0.2.0/package.tgz',
+12 verbose tar pack   '/Users/Vince/Desktop/rn-highcharts' ]
+13 verbose tarball /Users/Vince/.npm/rn-highcharts/0.2.0/package.tgz
+14 verbose folder /Users/Vince/Desktop/rn-highcharts
+15 verbose addLocalTarball adding from inside cache /Users/Vince/.npm/rn-highcharts/0.2.0/package.tgz
+16 verbose correctMkdir /Users/Vince/.npm correctMkdir not in flight; initializing
+17 silly cache afterAdd rn-highcharts@0.2.0
+18 verbose afterAdd /Users/Vince/.npm/rn-highcharts/0.2.0/package/package.json not in flight; writing
+19 verbose correctMkdir /Users/Vince/.npm correctMkdir not in flight; initializing
+20 verbose afterAdd /Users/Vince/.npm/rn-highcharts/0.2.0/package/package.json written
+21 silly publish { name: 'rn-highcharts',
+21 silly publish   version: '0.2.0',
+21 silly publish   description: 'JavaScript implementation of a view container that can flip between its front and back, where the back has a console.log and the front is your aplication.',
+21 silly publish   main: 'react-native-ChartView.js',
+21 silly publish   scripts: { test: 'jest' },
+21 silly publish   repository: { type: 'git' },
+21 silly publish   keywords:
+21 silly publish    [ 'react-native',
+21 silly publish      'react-component',
+21 silly publish      'ios',
+21 silly publish      'android',
+21 silly publish      'WebView',
+21 silly publish      'HighCharts' ],
+21 silly publish   license: 'MIT',
+21 silly publish   readme: 'This package is identical to to react-native-highcharts, except we are implementing our own version so we don\'t have to wait for PR to be accepted.\n\nFixes:\nAdded script tag for Heat Map\n',
+21 silly publish   readmeFilename: 'README.md',
+21 silly publish   gitHead: 'ca6680cacbb92e4e2c5390b81c5ffb331b569bf7',
+21 silly publish   _id: 'rn-highcharts@0.2.0',
+21 silly publish   _shasum: '0b136bf7ca6448a4776d1f4c1c2925e510d85b42',
+21 silly publish   _from: '.' }
+22 verbose getPublishConfig undefined
+23 silly mapToRegistry name rn-highcharts
+24 silly mapToRegistry using default registry
+25 silly mapToRegistry registry https://registry.npmjs.org/
+26 silly mapToRegistry uri https://registry.npmjs.org/rn-highcharts
+27 verbose publish registryBase https://registry.npmjs.org/
+28 silly publish uploading /Users/Vince/.npm/rn-highcharts/0.2.0/package.tgz
+29 verbose request uri https://registry.npmjs.org/rn-highcharts
+30 verbose request sending authorization for write operation
+31 info attempt registry request try #1 at 7:16:06 PM
+32 verbose request using bearer token for auth
+33 verbose request id f4f0ed1fc08c73be
+34 http request PUT https://registry.npmjs.org/rn-highcharts
+35 http 403 https://registry.npmjs.org/rn-highcharts
+36 verbose headers { 'content-type': 'application/json',
+36 verbose headers   'cache-control': 'max-age=300',
+36 verbose headers   'content-length': '95',
+36 verbose headers   'accept-ranges': 'bytes',
+36 verbose headers   date: 'Sat, 25 Mar 2017 05:16:07 GMT',
+36 verbose headers   via: '1.1 varnish',
+36 verbose headers   connection: 'keep-alive',
+36 verbose headers   'x-served-by': 'cache-sjc3146-SJC',
+36 verbose headers   'x-cache': 'MISS',
+36 verbose headers   'x-cache-hits': '0',
+36 verbose headers   'x-timer': 'S1490418966.850196,VS0,VE200',
+36 verbose headers   vary: 'Accept-Encoding' }
+37 verbose request invalidating /Users/Vince/.npm/registry.npmjs.org/rn-highcharts on PUT
+38 error publish Failed PUT 403
+39 verbose stack Error: "You cannot publish over the previously published version 0.2.0." : rn-highcharts
+39 verbose stack     at makeError (/Users/Vince/.nvm/versions/node/v5.6.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+39 verbose stack     at CachingRegistryClient.<anonymous> (/Users/Vince/.nvm/versions/node/v5.6.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:252:14)
+39 verbose stack     at Request._callback (/Users/Vince/.nvm/versions/node/v5.6.0/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+39 verbose stack     at Request.self.callback (/Users/Vince/.nvm/versions/node/v5.6.0/lib/node_modules/npm/node_modules/request/request.js:198:22)
+39 verbose stack     at emitTwo (events.js:100:13)
+39 verbose stack     at Request.emit (events.js:185:7)
+39 verbose stack     at Request.<anonymous> (/Users/Vince/.nvm/versions/node/v5.6.0/lib/node_modules/npm/node_modules/request/request.js:1035:10)
+39 verbose stack     at emitOne (events.js:95:20)
+39 verbose stack     at Request.emit (events.js:182:7)
+39 verbose stack     at IncomingMessage.<anonymous> (/Users/Vince/.nvm/versions/node/v5.6.0/lib/node_modules/npm/node_modules/request/request.js:962:12)
+40 verbose statusCode 403
+41 verbose pkgid rn-highcharts
+42 verbose cwd /Users/Vince/Desktop/rn-highcharts
+43 error Darwin 15.6.0
+44 error argv "/Users/Vince/.nvm/versions/node/v5.6.0/bin/node" "/Users/Vince/.nvm/versions/node/v5.6.0/bin/npm" "publish"
+45 error node v5.6.0
+46 error npm  v3.6.0
+47 error code E403
+48 error "You cannot publish over the previously published version 0.2.0." : rn-highcharts
+49 error If you need help, you may report this error at:
+49 error     <https://github.com/npm/npm/issues>
+50 verbose exit [ 1, true ]
